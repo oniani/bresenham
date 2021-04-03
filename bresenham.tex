@@ -1,0 +1,156 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Author: David Oniani
+%
+%  _         _____   __  __
+% | |    __ |_   _|__\ \/ /
+% | |   / _` || |/ _ \\  /
+% | |__| (_| || |  __//  \
+% |_____\__,_||_|\___/_/\_\
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Document Definition
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass{article}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Packages and Related Settings
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Global, document-wide settings
+\usepackage[margin=1in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+
+% Other packages
+\usepackage{caption}
+\usepackage{hyperref}
+\usepackage{mathtools}
+\usepackage{minted}
+\usepackage{xcolor}
+\usepackage{sectsty}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Setup
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Remove indentations from paragraphs
+\setlength{\parindent}{0pt}
+
+% Orange color
+\definecolor{orange}{HTML}{f0360e}
+
+% Black-blue color
+\colorlet{bb}{black!50!blue}
+
+% Change section color
+\sectionfont{\color{orange}}
+
+% PDF information and nice-looking urls
+\hypersetup{%
+    pdfauthor={David Oniani},
+    pdftitle={Bresenham's Circle Drawing Algorithm},
+    pdfsubject={circle, geometry, bresenham},
+    pdfkeywords={circle, geometry, bresenham},
+    pdflang={English},
+    colorlinks=true,
+    linkcolor={bb},
+    citecolor={bb},
+    urlcolor={bb}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Author(s), Title, and Date
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Author(s)
+\author{David Oniani\\
+        \href{mailto:onianidavid@luther.edu}{onianidavid@luther.edu}}
+
+% Title
+\title{\textcolor{orange}{\textit{Bresenham's Circle Drawing Algorithm}}}
+
+% Date
+\date{\today}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% The Beginning of the Document
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\maketitle
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Derivation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Derivation}
+
+Let the radius of the circle be given and equal \(r\). Any point \((x, y)\) on
+the circle satisfies the following:
+\begin{equation}
+    x^2 + y^2 = r^2
+\end{equation}
+
+We consider the upper 45 degrees in the first quadrant of the circle. We can
+place the next point either to the east \((x + 1, y)\) or southeast \((x + 1, y
+- 1)\). We define errors for both of these points:
+\begin{align}
+    &e(x + 1, y) = {(x + 1)}^2 + y^2 - r^2\\
+    &e(x + 1, y - 1) = {(x + 1)}^2 + {(y - 1)}^2 - r^2
+\end{align}
+
+We now define the decision parameter \(d\):
+\begin{equation}
+    d = e(x + 1, y) + e(x + 1, y - 1) = 2{(x + 1)}^2 + y^2 + {(y - 1)}^2 - 2r^2
+\end{equation}
+
+Since the \(x\) coordinate always increases, the next point is \((x + 1, y_n)\)
+and we have:
+\begin{equation}
+    d_n = 2{(x + 2)}^2 + {y_n}^2 + {(y_n - 1)}^2 - 2r^2
+\end{equation}
+
+Now, let us calculate the difference:
+\begin{align}
+    &d_n - d = 2{(x + 2)}^2 + {y_n}^2 + {({y_n} - 1)}^2 - 2r^2 -
+        (2{(x + 1)}^2 + {y}^2 + {(y - 1)}^2 - 2r^2)\\
+    &d_n - d = 2(2x + 3) + \big({y_n}^2 - y^2\big) +
+        \big({(y_n - 1)}^2 - {(y - 1)}^2\big)
+\end{align}
+
+Finally, we get:
+\begin{align}
+    &d_n - d = 2(2x + 3) &&\implies d_n = d + 4x + 6
+        &&\text{ if } d \leq 0\ (y_n = y)\\
+    &d_n - d = 2(2x + 3) - 4y + 4 &&\implies d_n = d + 4(x - y) + 10
+        &&\text{ if } d > 0\ (y_n = y - 1)\\
+    &d_0 = 2{(0 + 1)}^2 + r^2 + {(r - 1)}^2 - 2r^2 &&\implies d_0 = 3 - 2r
+        &&\text{ at initial point } (0, r)
+\end{align}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Implementation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\clearpage
+\section{Implementation}
+
+\begin{itemize}
+    \item Time Complexity: \(O(r)\) where \(r\) is the radius of the circle
+    \item Space Complexity: \(O(1)\)
+\end{itemize}
+
+\begin{figure}[H]
+    \inputminted[fontsize=\small,frame=single,framerule=1pt]{python}{bresenham.py}
+    \caption*{A Python Implementation of Bresenham's Circle Drawing Algorithm}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% The End of the Document
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{document}

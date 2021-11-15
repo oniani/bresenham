@@ -2,16 +2,16 @@ import matplotlib.pyplot as plt
 
 
 def bresenham(radius: float) -> None:
-    """Draw a circle using Bresenham's Circle Drawing Algorithm."""
+    """Draws a circle using Bresenham's Circle Drawing Algorithm."""
 
     # Initial parameters
     x: int = 0
     y: float = radius
     d: float = 3 - 2 * radius
 
-    # Only consider upper 45 degrees in the first quadrant and draw a circle
+    # Consider the upper half of the first quadrant
     while x <= y:
-        # Plot eight points using eight-way symmetry
+        # Put eight points via eight-way symmetry
         plt.scatter([x, x, -x, -x, y, y, -y, -y], [y, -y, y, -y, x, -x, x, -x])
 
         # Make decisions and update parameters

@@ -5,9 +5,9 @@ def bresenham(radius: float) -> None:
     """Draws a circle using Bresenham's Circle Drawing Algorithm."""
 
     # Initial parameters
-    x: int = 0
-    y: float = radius
-    d: float = 3 - 2 * radius
+    x = 0
+    y = radius
+    d = 3 - 2 * radius
 
     # Consider the upper half of the first quadrant
     while x <= y:
